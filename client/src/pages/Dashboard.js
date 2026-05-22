@@ -25,7 +25,7 @@ function Dashboard() {
       const token = localStorage.getItem("token");
 
       const response = await axios.get(
-        "https://team-task-manager-production.up.railway.app/api/projects",
+        "https://team-task-manager-production.up.railway.app/api/tasks",
         {
           headers: {
             authorization: token
