@@ -10,6 +10,9 @@ function Dashboard() {
   const [projects, setProjects] = useState([]);
   const [tasks, setTasks] = useState([]);
 
+  const backendURL =
+    "https://team-task-manager-production-150a.up.railway.app";
+
   useEffect(() => {
 
     fetchProjects();
@@ -24,7 +27,7 @@ function Dashboard() {
       const token = localStorage.getItem("token");
 
       const response = await axios.get(
-        "https://team-task-manager-production.up.railway.app/api/projects",
+        `${backendURL}/api/projects`,
         {
           headers: {
             authorization: `Bearer ${token}`
@@ -49,7 +52,7 @@ function Dashboard() {
       const token = localStorage.getItem("token");
 
       const response = await axios.get(
-        "https://team-task-manager-production.up.railway.app/api/tasks",
+        `${backendURL}/api/tasks`,
         {
           headers: {
             authorization: `Bearer ${token}`
@@ -67,273 +70,150 @@ function Dashboard() {
 
   };
 
-  const updateTaskStatus = async (id) => {
-
-    try {
-
-      const token = localStorage.getItem("token");
-
-      await axios.put(
-        `https://team-task-manager-production.up.railway.app/api/tasks/${id}`,
-        {
-          status: "Completed"
-        },
-        {
-          headers: {
-            authorization: `Bearer ${token}`
-          }
-        }
-      );
-
-      fetchTasks();
-
-    } catch (error) {
-
-      console.log(error);
-
-    }
-
-  };
-
-  const deleteTask = async (id) => {
-
-    try {
-
-      const token = localStorage.getItem("token");
-
-      await axios.delete(
-        `https://team-task-manager-production.up.railway.app/api/tasks/${id}`,
-        {
-          headers: {
-            authorization: `Bearer ${token}`
-          }
-        }
-      );
-
-      fetchTasks();
-
-    } catch (error) {
-
-      console.log(error);
-
-    }
-
-  };
-
-  const deleteProject = async (id) => {
-
-    try {
-
-      const token = localStorage.getItem("token");
-
-      await axios.delete(
-        `https://team-task-manager-production.up.railway.app/api/projects/${id}`,
-        {
-          headers: {
-            authorization: `Bearer ${token}`
-          }
-        }
-      );
-
-      fetchProjects();
-
-    } catch (error) {
-
-      console.log(error);
-
-    }
-
-  };
-
   return (
 
-    <div
-      style={{
-        backgroundColor: "#f1f5f9",
-        minHeight: "100vh",
-        paddingBottom: "50px"
-      }}
-    >
+    <div>
 
       <Navbar />
 
       <div
         style={{
-          width: "90%",
-          margin: "auto",
-          paddingTop: "30px"
+          padding: "30px"
         }}
       >
 
         <h1>Dashboard</h1>
 
-        <p>Welcome to Team Task Manager 🚀</p>
-
-        <CreateProject />
-
-        <CreateTask />
-
         <div
           style={{
-            display: "flex",
+            display: "grid",
+            gridTemplateColumns: "repeat(4, 1fr)",
             gap: "20px",
-            marginTop: "20px",
-            marginBottom: "30px"
+            marginTop: "20px"
           }}
         >
 
-          <div
-            style={{
-              backgroundColor: "#2563eb",
-              color: "white",
-              padding: "20px",
-              borderRadius: "10px",
-              width: "200px"
-            }}
-          >
-            <h3>Total Projects</h3>
+          <div style={cardStyle}>
+            <h2>Total Projects</h2>
             <p>{projects.length}</p>
           </div>
 
-          <div
-            style={{
-              backgroundColor: "#16a34a",
-              color: "white",
-              padding: "20px",
-              borderRadius: "10px",
-              width: "200px"
-            }}
-          >
-            <h3>Total Tasks</h3>
+          <div style={cardStyle}>
+            <h2>Total Tasks</h2>
             <p>{tasks.length}</p>
+          </div>
+
+          <div style={cardStyle}>
+            <h2>Completed</h2>
+            <p>
+              {
+                tasks.filter(
+                  (task) => task.status === "Completed"
+                ).length
+              }
+            </p>
+          </div>
+
+          <div style={cardStyle}>
+            <h2>Pending</h2>
+            <p>
+              {
+                tasks.filter(
+                  (task) => task.status === "Pending"
+                ).length
+              }
+            </p>
           </div>
 
         </div>
 
-        <h2
-          style={{
-            marginBottom: "20px",
-            color: "#1e293b"
-          }}
-        >
-          Projects
-        </h2>
+        <CreateProject />
 
-        {
-          projects.map((project) => (
+        <div style={{ marginTop: "20px" }}>
 
-            <div
-              key={project._id}
-              style={{
-                backgroundColor: "white",
-                padding: "20px",
-                marginBottom: "20px",
-                borderRadius: "10px",
-                boxShadow: "0 2px 10px rgba(0,0,0,0.1)"
-              }}
-            >
+          <h2>Projects</h2>
 
-              <h3>{project.projectName}</h3>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(3, 1fr)",
+              gap: "20px"
+            }}
+          >
 
-              <p>{project.description}</p>
+            {
+              projects.map((project) => (
 
-              <button
-                onClick={() => deleteProject(project._id)}
-                style={{
-                  backgroundColor: "#ef4444",
-                  color: "white",
-                  border: "none",
-                  padding: "10px 15px",
-                  borderRadius: "5px",
-                  cursor: "pointer",
-                  marginTop: "10px"
-                }}
-              >
-                Delete Project
-              </button>
+                <div
+                  key={project._id}
+                  style={cardStyle}
+                >
 
-            </div>
+                  <h3>{project.projectName}</h3>
 
-          ))
-        }
+                  <p>{project.description}</p>
 
-        <h2
-          style={{
-            marginTop: "40px",
-            marginBottom: "20px",
-            color: "#1e293b"
-          }}
-        >
-          Tasks
-        </h2>
+                </div>
 
-        {
-          tasks.map((task) => (
+              ))
+            }
 
-            <div
-              key={task._id}
-              style={{
-                backgroundColor: "white",
-                padding: "20px",
-                marginBottom: "20px",
-                borderRadius: "10px",
-                boxShadow: "0 2px 10px rgba(0,0,0,0.1)"
-              }}
-            >
+          </div>
 
-              <h3>{task.title}</h3>
+        </div>
 
-              <p>{task.description}</p>
+        <CreateTask />
 
-              <p
-                style={{
-                  color:
-                    task.status === "Completed"
-                      ? "green"
-                      : task.status === "In Progress"
-                      ? "blue"
-                      : "orange",
-                  fontWeight: "bold"
-                }}
-              >
-                Status: {task.status}
-              </p>
+        <div style={{ marginTop: "20px" }}>
 
-              <button
-                onClick={() => updateTaskStatus(task._id)}
-                style={{
-                  backgroundColor: "#2563eb",
-                  color: "white",
-                  border: "none",
-                  padding: "10px 15px",
-                  borderRadius: "5px",
-                  cursor: "pointer",
-                  marginTop: "10px"
-                }}
-              >
-                Mark as Completed
-              </button>
+          <h2>Tasks</h2>
 
-              <button
-                onClick={() => deleteTask(task._id)}
-                style={{
-                  backgroundColor: "#ef4444",
-                  color: "white",
-                  border: "none",
-                  padding: "10px 15px",
-                  borderRadius: "5px",
-                  cursor: "pointer",
-                  marginTop: "10px",
-                  marginLeft: "10px"
-                }}
-              >
-                Delete
-              </button>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(3, 1fr)",
+              gap: "20px"
+            }}
+          >
 
-            </div>
+            {
+              tasks.map((task) => (
 
-          ))
-        }
+                <div
+                  key={task._id}
+                  style={cardStyle}
+                >
+
+                  <h3>{task.title}</h3>
+
+                  <p>{task.description}</p>
+
+                  <p>
+                    Status:
+                     <span
+    style={{
+      color:
+        task.status === "Completed"
+          ? "green"
+          : task.status === "Pending"
+          ? "red"
+          : "orange",
+      fontWeight: "bold"
+    }}
+  >
+    {" "}
+    {task.status}
+  </span>
+                  </p>
+
+                </div>
+
+              ))
+            }
+
+          </div>
+
+        </div>
 
       </div>
 
@@ -342,5 +222,12 @@ function Dashboard() {
   );
 
 }
+
+const cardStyle = {
+  backgroundColor: "white",
+  padding: "20px",
+  borderRadius: "10px",
+  boxShadow: "0 2px 10px rgba(0,0,0,0.1)"
+};
 
 export default Dashboard;

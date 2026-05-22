@@ -6,32 +6,26 @@ function CreateProject() {
   const [projectName, setProjectName] = useState("");
   const [description, setDescription] = useState("");
 
-  const handleCreateProject = async (e) => {
-
-    e.preventDefault();
+  const handleCreateProject = async () => {
 
     try {
 
       const token = localStorage.getItem("token");
 
       const response = await axios.post(
-        "https://team-task-manager-production.up.railway.app/api/projects",
+        "https://team-task-manager-production-150a.up.railway.app/api/projects",
         {
           projectName,
           description
         },
         {
           headers: {
-            authorization: `Bearer ${token}`
+  authorization: token
           }
         }
       );
 
       alert(response.data.message);
-
-      setProjectName("");
-      setDescription("");
-
       window.location.reload();
 
     } catch (error) {
@@ -50,54 +44,33 @@ function CreateProject() {
       style={{
         backgroundColor: "white",
         padding: "20px",
-        borderRadius: "10px",
-        marginBottom: "30px",
-        boxShadow: "0 2px 10px rgba(0,0,0,0.1)"
+        marginTop: "20px",
+        borderRadius: "10px"
       }}
     >
 
       <h2>Create Project</h2>
 
-      <form onSubmit={handleCreateProject}>
+      <input
+        type="text"
+        placeholder="Project Name"
+        value={projectName}
+        onChange={(e) => setProjectName(e.target.value)}
+      />
 
-        <input
-          type="text"
-          placeholder="Project Name"
-          value={projectName}
-          onChange={(e) => setProjectName(e.target.value)}
-          style={{
-            width: "100%",
-            padding: "10px",
-            marginBottom: "15px"
-          }}
-        />
+      <br /><br />
 
-        <textarea
-          placeholder="Project Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          style={{
-            width: "100%",
-            padding: "10px",
-            marginBottom: "15px"
-          }}
-        />
+      <textarea
+        placeholder="Project Description"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+      />
 
-        <button
-          type="submit"
-          style={{
-            backgroundColor: "#2563eb",
-            color: "white",
-            padding: "10px 20px",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer"
-          }}
-        >
-          Create Project
-        </button>
+      <br /><br />
 
-      </form>
+      <button onClick={handleCreateProject}>
+        Create Project
+      </button>
 
     </div>
 

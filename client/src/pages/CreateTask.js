@@ -5,40 +5,33 @@ function CreateTask() {
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [status, setStatus] = useState("Pending");
 
-  const handleCreateTask = async (e) => {
-
-    e.preventDefault();
+  const handleCreateTask = async () => {
 
     try {
 
       const token = localStorage.getItem("token");
 
       const response = await axios.post(
-        "https://team-task-manager-production.up.railway.app/api/tasks",
+        "https://team-task-manager-production-150a.up.railway.app/api/tasks",
         {
           title,
-          description
+          description,
+          status
         },
         {
           headers: {
-            authorization: `Bearer ${token}`
+            authorization: token
           }
         }
       );
 
       alert(response.data.message);
 
-      setTitle("");
-      setDescription("");
-
-      window.location.reload();
-
     } catch (error) {
 
-      console.log(error);
-
-      alert("Failed to create task");
+      alert("Task Creation Failed");
 
     }
 
@@ -49,55 +42,47 @@ function CreateTask() {
     <div
       style={{
         backgroundColor: "white",
-        padding: "20px",
+        padding: "25px",
         borderRadius: "10px",
-        marginBottom: "30px",
+        marginTop: "20px",
         boxShadow: "0 2px 10px rgba(0,0,0,0.1)"
       }}
     >
 
       <h2>Create Task</h2>
 
-      <form onSubmit={handleCreateTask}>
+      <input
+        type="text"
+        placeholder="Task Title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+      />
 
-        <input
-          type="text"
-          placeholder="Task Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          style={{
-            width: "100%",
-            padding: "10px",
-            marginBottom: "15px"
-          }}
-        />
+      <textarea
+        placeholder="Task Description"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+      />
 
-        <textarea
-          placeholder="Task Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          style={{
-            width: "100%",
-            padding: "10px",
-            marginBottom: "15px"
-          }}
-        />
+      <select
+        value={status}
+        onChange={(e) => setStatus(e.target.value)}
+        style={{
+          width: "100%",
+          padding: "10px",
+          marginTop: "10px"
+        }}
+      >
 
-        <button
-          type="submit"
-          style={{
-            backgroundColor: "#16a34a",
-            color: "white",
-            padding: "10px 20px",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer"
-          }}
-        >
-          Create Task
-        </button>
+        <option>Pending</option>
+        <option>In Progress</option>
+        <option>Completed</option>
 
-      </form>
+      </select>
+
+      <button onClick={handleCreateTask}>
+        Create Task
+      </button>
 
     </div>
 
