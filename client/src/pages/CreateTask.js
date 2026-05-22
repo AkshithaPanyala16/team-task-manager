@@ -15,8 +15,7 @@ function CreateTask() {
       const token = localStorage.getItem("token");
 
       const response = await axios.post(
-        "http://localhost:5000/api/tasks",
-        {
+"https://team-task-manager-production.up.railway.app/api/tasks"        {
           title,
           description
         },

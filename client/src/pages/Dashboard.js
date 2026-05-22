@@ -25,7 +25,7 @@ function Dashboard() {
       const token = localStorage.getItem("token");
 
       const response = await axios.get(
-        "http://localhost:5000/api/projects",
+        "https://team-task-manager-production.up.railway.app/api/projects",
         {
           headers: {
             authorization: token
@@ -52,7 +52,7 @@ function Dashboard() {
       const token = localStorage.getItem("token");
 
       const response = await axios.get(
-        "http://localhost:5000/api/tasks",
+        "https://team-task-manager-production.up.railway.app/api/tasks",
         {
           headers: {
             authorization: token
@@ -77,7 +77,7 @@ function Dashboard() {
       const token = localStorage.getItem("token");
 
       await axios.put(
-        `http://localhost:5000/api/tasks/${id}`,
+        `https://team-task-manager-production.up.railway.app/api/tasks/${id}`,
         {
           status: "Completed"
         },
@@ -105,7 +105,7 @@ function Dashboard() {
       const token = localStorage.getItem("token");
 
       await axios.delete(
-        `http://localhost:5000/api/tasks/${id}`,
+        `https://team-task-manager-production.up.railway.app/api/tasks/${id}`,
         {
           headers: {
             authorization: token
@@ -130,7 +130,7 @@ function Dashboard() {
       const token = localStorage.getItem("token");
 
       await axios.delete(
-        `http://localhost:5000/api/projects/${id}`,
+        `https://team-task-manager-production.up.railway.app/api/projects/${id}`,
         {
           headers: {
             authorization: token
