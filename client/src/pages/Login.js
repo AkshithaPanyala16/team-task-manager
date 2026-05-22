@@ -22,7 +22,6 @@ function Login() {
 
       alert(response.data.message);
 
-      // STORE TOKEN
       localStorage.setItem(
         "token",
         response.data.token
@@ -34,7 +33,9 @@ function Login() {
 
     } catch (error) {
 
-      alert(error.response.data.message);
+      console.log(error);
+
+      alert("Login Failed");
 
     }
 
@@ -52,7 +53,8 @@ function Login() {
       }}
     >
 
-      <div
+      <form
+        onSubmit={handleLogin}
         style={{
           backgroundColor: "white",
           padding: "40px",
@@ -68,53 +70,49 @@ function Login() {
             marginBottom: "20px"
           }}
         >
-          Team Task Manager
+          Login
         </h2>
 
-        <form onSubmit={handleLogin}>
+        <input
+          type="email"
+          placeholder="Enter Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          style={{
+            width: "100%",
+            padding: "10px",
+            marginBottom: "15px"
+          }}
+        />
 
-          <input
-            type="email"
-            placeholder="Enter Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            style={{
-              width: "100%",
-              padding: "10px",
-              marginBottom: "15px"
-            }}
-          />
+        <input
+          type="password"
+          placeholder="Enter Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          style={{
+            width: "100%",
+            padding: "10px",
+            marginBottom: "20px"
+          }}
+        />
 
-          <input
-            type="password"
-            placeholder="Enter Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            style={{
-              width: "100%",
-              padding: "10px",
-              marginBottom: "20px"
-            }}
-          />
+        <button
+          type="submit"
+          style={{
+            width: "100%",
+            padding: "10px",
+            backgroundColor: "#2563eb",
+            color: "white",
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer"
+          }}
+        >
+          Login
+        </button>
 
-          <button
-            type="submit"
-            style={{
-              width: "100%",
-              padding: "10px",
-              backgroundColor: "#2563eb",
-              color: "white",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer"
-            }}
-          >
-            Login
-          </button>
-
-        </form>
-
-      </div>
+      </form>
 
     </div>
 

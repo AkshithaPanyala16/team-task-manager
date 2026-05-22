@@ -15,13 +15,14 @@ function CreateTask() {
       const token = localStorage.getItem("token");
 
       const response = await axios.post(
-"https://team-task-manager-production.up.railway.app/api/tasks"        {
+        "https://team-task-manager-production.up.railway.app/api/tasks",
+        {
           title,
           description
         },
         {
           headers: {
-            authorization: token
+            authorization: `Bearer ${token}`
           }
         }
       );
@@ -30,6 +31,7 @@ function CreateTask() {
 
       setTitle("");
       setDescription("");
+
       window.location.reload();
 
     } catch (error) {

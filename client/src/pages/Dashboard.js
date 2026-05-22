@@ -13,7 +13,6 @@ function Dashboard() {
   useEffect(() => {
 
     fetchProjects();
-
     fetchTasks();
 
   }, []);
@@ -25,10 +24,10 @@ function Dashboard() {
       const token = localStorage.getItem("token");
 
       const response = await axios.get(
-        "https://team-task-manager-production.up.railway.app/api/tasks",
+        "https://team-task-manager-production.up.railway.app/api/projects",
         {
           headers: {
-            authorization: token
+            authorization: `Bearer ${token}`
           }
         }
       );
@@ -38,8 +37,6 @@ function Dashboard() {
     } catch (error) {
 
       console.log(error);
-
-      alert("Failed to fetch projects");
 
     }
 
@@ -55,7 +52,7 @@ function Dashboard() {
         "https://team-task-manager-production.up.railway.app/api/tasks",
         {
           headers: {
-            authorization: token
+            authorization: `Bearer ${token}`
           }
         }
       );
@@ -83,7 +80,7 @@ function Dashboard() {
         },
         {
           headers: {
-            authorization: token
+            authorization: `Bearer ${token}`
           }
         }
       );
@@ -108,7 +105,7 @@ function Dashboard() {
         `https://team-task-manager-production.up.railway.app/api/tasks/${id}`,
         {
           headers: {
-            authorization: token
+            authorization: `Bearer ${token}`
           }
         }
       );
@@ -133,7 +130,7 @@ function Dashboard() {
         `https://team-task-manager-production.up.railway.app/api/projects/${id}`,
         {
           headers: {
-            authorization: token
+            authorization: `Bearer ${token}`
           }
         }
       );
@@ -150,15 +147,21 @@ function Dashboard() {
 
   return (
 
-    <div>
+    <div
+      style={{
+        backgroundColor: "#f1f5f9",
+        minHeight: "100vh",
+        paddingBottom: "50px"
+      }}
+    >
 
       <Navbar />
 
       <div
         style={{
-          padding: "40px",
-          backgroundColor: "#f1f5f9",
-          minHeight: "100vh"
+          width: "90%",
+          margin: "auto",
+          paddingTop: "30px"
         }}
       >
 
@@ -189,9 +192,7 @@ function Dashboard() {
             }}
           >
             <h3>Total Projects</h3>
-
             <p>{projects.length}</p>
-
           </div>
 
           <div
@@ -204,16 +205,13 @@ function Dashboard() {
             }}
           >
             <h3>Total Tasks</h3>
-
             <p>{tasks.length}</p>
-
           </div>
 
         </div>
 
         <h2
           style={{
-            marginTop: "40px",
             marginBottom: "20px",
             color: "#1e293b"
           }}
@@ -299,19 +297,6 @@ function Dashboard() {
                 }}
               >
                 Status: {task.status}
-              </p>
-
-              <p
-                style={{
-                  color: "gray",
-                  fontSize: "14px"
-                }}
-              >
-                Created:
-                {
-                  new Date(task.createdAt)
-                    .toLocaleDateString()
-                }
               </p>
 
               <button
