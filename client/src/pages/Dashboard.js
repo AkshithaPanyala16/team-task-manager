@@ -15,28 +15,29 @@ function Dashboard() {
 
   useEffect(() => {
 
+  const interval = setInterval(() => {
+
     fetchProjects();
     fetchTasks();
 
-  }, []);
+  }, 1000);
 
+  return () => clearInterval(interval);
+
+}, []);
+
+  // FETCH PROJECTS
   const fetchProjects = async () => {
 
     try {
 
-      const token = localStorage.getItem("token");
-
       const response = await axios.get(
-        `${backendURL}/api/projects`,
-        {
-          headers: {
-            authorization: `Bearer ${token}`
-          }
-        }
+        `${backendURL}/api/projects`
       );
 
-      setProjects(response.data);
+      console.log(response.data);
 
+setProjects(response.data.projects || response.data);
     } catch (error) {
 
       console.log(error);
@@ -45,23 +46,18 @@ function Dashboard() {
 
   };
 
+  // FETCH TASKS
   const fetchTasks = async () => {
 
     try {
 
-      const token = localStorage.getItem("token");
-
       const response = await axios.get(
-        `${backendURL}/api/tasks`,
-        {
-          headers: {
-            authorization: `Bearer ${token}`
-          }
-        }
+        `${backendURL}/api/tasks`
       );
 
-      setTasks(response.data);
+      console.log(response.data);
 
+setTasks(response.data.tasks || response.data);
     } catch (error) {
 
       console.log(error);
@@ -83,6 +79,8 @@ function Dashboard() {
       >
 
         <h1>Dashboard</h1>
+
+        {/* DASHBOARD CARDS */}
 
         <div
           style={{
@@ -127,91 +125,124 @@ function Dashboard() {
 
         </div>
 
+        {/* CREATE PROJECT */}
+
         <CreateProject />
 
-        <div style={{ marginTop: "20px" }}>
+        {/* PROJECT LIST */}
+
+        <div style={{ marginTop: "30px" }}>
 
           <h2>Projects</h2>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(3, 1fr)",
-              gap: "20px"
-            }}
-          >
+          {
+            projects.length === 0 ? (
 
-            {
-              projects.map((project) => (
+              <p>No Projects Available</p>
 
-                <div
-                  key={project._id}
-                  style={cardStyle}
-                >
+            ) : (
 
-                  <h3>{project.projectName}</h3>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(3, 1fr)",
+                  gap: "20px",
+                  marginTop: "20px"
+                }}
+              >
 
-                  <p>{project.description}</p>
+                {
+                  projects.map((project) => (
 
-                </div>
+                    <div
+                      key={project._id}
+                      style={cardStyle}
+                    >
 
-              ))
-            }
+                      <h3>{project.projectName}</h3>
 
-          </div>
+                      <p>{project.description}</p>
+
+                    </div>
+
+                  ))
+                }
+
+              </div>
+
+            )
+          }
 
         </div>
 
+        {/* CREATE TASK */}
+
         <CreateTask />
 
-        <div style={{ marginTop: "20px" }}>
+        {/* TASK LIST */}
+
+        <div style={{ marginTop: "30px" }}>
 
           <h2>Tasks</h2>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(3, 1fr)",
-              gap: "20px"
-            }}
-          >
+          {
+            tasks.length === 0 ? (
 
-            {
-              tasks.map((task) => (
+              <p>No Tasks Available</p>
 
-                <div
-                  key={task._id}
-                  style={cardStyle}
-                >
+            ) : (
 
-                  <h3>{task.title}</h3>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(3, 1fr)",
+                  gap: "20px",
+                  marginTop: "20px"
+                }}
+              >
 
-                  <p>{task.description}</p>
+                {
+                  tasks.map((task) => (
 
-                  <p>
-                    Status:
-                     <span
-    style={{
-      color:
-        task.status === "Completed"
-          ? "green"
-          : task.status === "Pending"
-          ? "red"
-          : "orange",
-      fontWeight: "bold"
-    }}
-  >
-    {" "}
-    {task.status}
-  </span>
-                  </p>
+                    <div
+                      key={task._id}
+                      style={cardStyle}
+                    >
 
-                </div>
+                      <h3>{task.title}</h3>
 
-              ))
-            }
+                      <p>{task.description}</p>
 
-          </div>
+                      <p>
+
+                        Status:
+
+                        <span
+                          style={{
+                            color:
+                              task.status === "Completed"
+                                ? "green"
+                                : task.status === "Pending"
+                                ? "red"
+                                : "orange",
+                            fontWeight: "bold"
+                          }}
+                        >
+                          {" "}
+                          {task.status}
+                        </span>
+
+                      </p>
+
+                    </div>
+
+                  ))
+                }
+
+              </div>
+
+            )
+          }
 
         </div>
 

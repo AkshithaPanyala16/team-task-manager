@@ -7,31 +7,31 @@ function CreateTask() {
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState("Pending");
 
+  const backendURL =
+    "https://team-task-manager-production-150a.up.railway.app";
+
   const handleCreateTask = async () => {
 
     try {
 
-      const token = localStorage.getItem("token");
-
       const response = await axios.post(
-        "https://team-task-manager-production-150a.up.railway.app/api/tasks",
+        `${backendURL}/api/tasks`,
         {
           title,
           description,
           status
-        },
-        {
-          headers: {
-            authorization: token
-          }
         }
       );
 
       alert(response.data.message);
 
+      window.location.reload();
+
     } catch (error) {
 
       alert("Task Creation Failed");
+
+      console.log(error);
 
     }
 
@@ -67,11 +67,6 @@ function CreateTask() {
       <select
         value={status}
         onChange={(e) => setStatus(e.target.value)}
-        style={{
-          width: "100%",
-          padding: "10px",
-          marginTop: "10px"
-        }}
       >
 
         <option>Pending</option>
