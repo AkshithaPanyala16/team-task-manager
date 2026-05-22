@@ -3,12 +3,36 @@ import axios from "axios";
 
 function Login() {
 
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = async (e) => {
+  const handleRegister = async () => {
 
-    e.preventDefault();
+    try {
+
+      await axios.post(
+        "https://team-task-manager-production.up.railway.app/api/auth/register",
+        {
+          name,
+          email,
+          password
+        }
+      );
+
+      alert("Register Successful");
+
+    } catch (error) {
+
+      console.log(error);
+
+      alert("Register Failed");
+
+    }
+
+  };
+
+  const handleLogin = async () => {
 
     try {
 
@@ -20,14 +44,12 @@ function Login() {
         }
       );
 
-      alert(response.data.message);
-
       localStorage.setItem(
         "token",
         response.data.token
       );
 
-      console.log(response.data);
+      alert("Login Successful");
 
       window.location.reload();
 
@@ -46,73 +68,43 @@ function Login() {
     <div
       style={{
         display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-        backgroundColor: "#f1f5f9"
+        flexDirection: "column",
+        gap: "10px",
+        width: "300px",
+        margin: "100px auto"
       }}
     >
 
-      <form
-        onSubmit={handleLogin}
-        style={{
-          backgroundColor: "white",
-          padding: "40px",
-          borderRadius: "10px",
-          boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
-          width: "350px"
-        }}
-      >
+      <h2>Team Task Manager</h2>
 
-        <h2
-          style={{
-            textAlign: "center",
-            marginBottom: "20px"
-          }}
-        >
-          Login
-        </h2>
+      <input
+        type="text"
+        placeholder="Enter Name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
 
-        <input
-          type="email"
-          placeholder="Enter Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          style={{
-            width: "100%",
-            padding: "10px",
-            marginBottom: "15px"
-          }}
-        />
+      <input
+        type="email"
+        placeholder="Enter Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
 
-        <input
-          type="password"
-          placeholder="Enter Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          style={{
-            width: "100%",
-            padding: "10px",
-            marginBottom: "20px"
-          }}
-        />
+      <input
+        type="password"
+        placeholder="Enter Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
 
-        <button
-          type="submit"
-          style={{
-            width: "100%",
-            padding: "10px",
-            backgroundColor: "#2563eb",
-            color: "white",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer"
-          }}
-        >
-          Login
-        </button>
+      <button onClick={handleRegister}>
+        Register
+      </button>
 
-      </form>
+      <button onClick={handleLogin}>
+        Login
+      </button>
 
     </div>
 
